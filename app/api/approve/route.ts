@@ -1,8 +1,10 @@
 export async function POST(req: Request) {
-  const { id } = await req.json();
-  await fetch(`https://api.minepi.com/v2/payments/${id}/approve`, {
+  const { paymentId, id } = await req.json();
+  const finalId = paymentId || id;
+  const PI_API_KEY = process.env.PI_API_KEY;
+  await fetch(`https://api.minepi.com/v2/payments/${finalId}/approve`, {
     method: 'POST',
-    headers: { Authorization: `Key ${process.env.PI_API_KEY}` }
+    headers: { 'Authorization': `Key ${PI_API_KEY}` }
   });
   return Response.json({ok:true});
 }
