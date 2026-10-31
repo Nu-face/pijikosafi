@@ -37,7 +37,7 @@ export default function TakaApp() {
   function onIncompletePayment(payment:any){
     // @ts-ignore
     return window.Pi.createPayment(payment.identifier, {
-      onReadyForServerApproval: (id:string) => fetch('/api/pi/approve',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({paymentId:id})}),
+      onReadyForServerApproval: (id:string) => fetch('/api/approve',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({paymentId:id})}),
       onReadyForServerCompletion: (id:string, txid:string) => fetch('/api/pi/complete',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({paymentId:id,txid})}),
       onCancel: ()=>{},
       onError: ()=>{}
@@ -98,11 +98,11 @@ export default function TakaApp() {
       }, {
         onReadyForServerApproval: async (paymentId:string) => {
           setStatus("Inathibitisha...");
-          await fetch('/api/pi/approve',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({paymentId})});
+          await fetch('/api/approve',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({paymentId})});
         },
         onReadyForServerCompletion: async (paymentId:string, txid:string) => {
           setStatus("Inakamilisha... " + txid.slice(0,8));
-          await fetch('/api/pi/complete',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({paymentId, txid, kg:kgNum})});
+          await fetch('/api/complete',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({paymentId, txid, kg:kgNum})});
           setStatus(`✅ ${kgNum}kg imesajiliwa! Asante ${user}`);
           setKg(k => k + kgNum);
           setPhoto(null); setKgInput("");
